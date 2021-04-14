@@ -1,7 +1,9 @@
 import galleryItems from './gallery-items.js';
 
 const galleryContainer = document.querySelector('.js-gallery');
-
+const galleryModalContainer = document.querySelector('.js-lightbox');
+const lightBoxImage = document.querySelector('.lightbox__image');
+const modalCloseBut = document.querySelector('.lightbox__button');
 
 const makeGalleryImage = ({preview, original, description}) => {
     const galleryItemEl = document.createElement('li');
@@ -25,24 +27,33 @@ const makeGalleryImage = ({preview, original, description}) => {
 
 const elements = galleryItems.map(makeGalleryImage);
 
-console.log(elements);
-
 galleryContainer.append(...elements);
 
+galleryContainer.addEventListener('click', onClic);
 
-console.log(makeGalleryImage(galleryItems[0]));
+function onClic(evt) {
+    if (evt.target.nodeName !== 'IMG') {
+        console.log(evt.target.nodeName);
+        return;
+    }
+    evt.preventDefault();
+    galleryModalContainer.classList.add('is-open');
+    lightBoxImage.src = evt.target.src;
 
-// console.log(galleryContainer);
-{/* <li class="gallery__item">
-  <a
-    class="gallery__link"
-    href="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-  >
-    <img
-      class="gallery__image"
-      src="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546__340.jpg"
-      data-source="https://cdn.pixabay.com/photo/2010/12/13/10/13/tulips-2546_1280.jpg"
-      alt="Tulips"
-    />
-  </a>
-</li> */}
+};
+
+galleryModalContainer.addEventListener('click', onBtnClick);
+
+function onBtnClick(evt) {
+    if (evt.target.nodeName !== 'BUTTON') {
+        return;
+    }
+
+    galleryModalContainer.classList.remove('is-open');
+    lightBoxImage.src = '';
+}
+
+
+
+
+
